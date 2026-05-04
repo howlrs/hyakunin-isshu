@@ -3,7 +3,7 @@ import { getAllPoems } from '@/lib/poems';
 
 export const dynamic = 'force-static';
 
-const BASE = 'https://hyakunin-isshu-8r7.pages.dev';
+const BASE = 'https://hyakunin.howlrs.net';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

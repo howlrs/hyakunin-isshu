@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { getAllPoems } from '@/lib/poems';
 import { TabFilter } from '@/components/TabFilter';
@@ -29,6 +30,14 @@ export default function HomePage() {
     <main id="main-content" className="container mx-auto max-w-5xl px-4 py-8">
       <JsonLd data={itemList} />
       <header className="mb-8">
+        <Image
+          src="/images/hero.webp"
+          alt="百人一首 — 四季を彩る絵巻"
+          width={1280}
+          height={720}
+          className="mb-6 h-auto w-full overflow-hidden rounded-lg"
+          priority
+        />
         <h1 className="font-serif text-3xl font-bold text-sumi md:text-4xl">百人一首 100首</h1>
         <p className="mt-2 font-sans text-koshoku">情景を味わいながら、100首を覚える</p>
       </header>

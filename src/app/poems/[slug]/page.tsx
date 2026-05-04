@@ -5,6 +5,7 @@ import { getAllPoems, getPoemBySlug } from '@/lib/poems';
 import { getRelatedPoems } from '@/lib/relations';
 import { ERA_LABELS, THEME_LABELS } from '@/data/types';
 import { PoemBody } from '@/components/PoemBody';
+import { PoemImage } from '@/components/PoemImage';
 import { KimariBadge } from '@/components/KimariBadge';
 import { Quiz } from '@/components/Quiz';
 import { RelatedPoemsSection } from '@/components/RelatedPoemsSection';
@@ -31,6 +32,20 @@ export async function generateMetadata({
       title: `${poem.kamiNoKu}（${poem.author}）`,
       description: poem.meaning,
       type: 'article',
+      images: [
+        {
+          url: `/images/og/${poem.slug}.webp`,
+          width: 1280,
+          height: 720,
+          alt: `${poem.kamiNoKu} ${poem.shimoNoKu}（${poem.author}）`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${poem.kamiNoKu}（${poem.author}）`,
+      description: poem.meaning,
+      images: [`/images/og/${poem.slug}.webp`],
     },
   };
 }
@@ -95,12 +110,7 @@ export default async function PoemPage({
 
         <PoemBody poem={poem} />
 
-        <figure
-          className="my-8 flex aspect-[16/9] items-center justify-center rounded-lg border border-dashed border-koshoku/40 bg-washi text-koshoku"
-          aria-hidden="true"
-        >
-          <figcaption className="font-sans text-sm">情景画像 (準備中)</figcaption>
-        </figure>
+        <PoemImage poem={poem} />
 
         <section className="my-8">
           <h2 className="mb-2 font-sans text-xl font-bold text-sumi">いつ・誰が</h2>

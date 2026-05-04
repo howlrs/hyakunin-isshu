@@ -24,7 +24,7 @@ const kleeOne = Klee_One({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://hyakunin-isshu-8r7.pages.dev'),
+  metadataBase: new URL('https://hyakunin.howlrs.net'),
   title: {
     default: '百人一首暗記',
     template: '%s | 百人一首暗記',
@@ -34,7 +34,27 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ja_JP',
     siteName: '百人一首暗記',
+    images: [
+      {
+        url: '/images/hero.webp',
+        width: 1280,
+        height: 720,
+        alt: '百人一首暗記 — 情景を味わいながら覚える',
+      },
+    ],
   },
+  twitter: {
+    card: 'summary_large_image',
+  },
+  icons: {
+    icon: [
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+    ],
+    apple: '/apple-touch-icon.png',
+    shortcut: '/favicon.ico',
+  },
+  manifest: '/site.webmanifest',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
