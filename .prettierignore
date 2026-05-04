@@ -1,0 +1,6 @@
+node_modules
+out
+.next
+coverage
+package-lock.json
+docs/100.md
