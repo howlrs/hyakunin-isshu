@@ -1,13 +1,14 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { getAllPoems, getPoemBySlug } from '@/lib/poems';
+import { getAllPoems, getPoemBySlug, getPoemById } from '@/lib/poems';
 import { getRelatedPoems } from '@/lib/relations';
 import { ERA_LABELS, THEME_LABELS } from '@/data/types';
 import { PoemBody } from '@/components/PoemBody';
 import { PoemImage } from '@/components/PoemImage';
+import { PoemNavigation } from '@/components/PoemNavigation';
+import { PoemReading } from '@/components/PoemReading';
 import { KimariBadge } from '@/components/KimariBadge';
-import { Quiz } from '@/components/Quiz';
 import { RelatedPoemsSection } from '@/components/RelatedPoemsSection';
 import { JsonLd } from '@/components/JsonLd';
 
@@ -61,6 +62,8 @@ export default async function PoemPage({
 
   const all = getAllPoems();
   const related = getRelatedPoems(poem, all);
+  const prevPoem = getPoemById(poem.id - 1);
+  const nextPoem = getPoemById(poem.id + 1);
 
   const articleLd = {
     '@context': 'https://schema.org',
@@ -87,7 +90,12 @@ export default async function PoemPage({
 
       <article>
         <header className="mb-6 space-y-3">
-          <h1 className="font-klee text-2xl text-sumi md:text-3xl">{poem.kamiNoKu}</h1>
+          <h1 className="font-klee text-2xl text-sumi md:text-3xl">
+            {poem.kamiNoKu}
+            <small className="mt-1 block font-sans text-sm font-normal text-koshoku" aria-hidden="true">
+              {poem.kamiKana}
+            </small>
+          </h1>
           <h2 className="font-sans text-base text-koshoku">
             第{poem.id}番 {poem.author}
             <span className="ml-2 text-sm">({poem.authorReading})</span>
@@ -112,6 +120,8 @@ export default async function PoemPage({
 
         <PoemImage poem={poem} />
 
+        <PoemReading poem={poem} />
+
         <section className="my-8">
           <h2 className="mb-2 font-sans text-xl font-bold text-sumi">いつ・誰が</h2>
           <p className="leading-loose text-sumi">{poem.whoWhen}</p>
@@ -127,11 +137,19 @@ export default async function PoemPage({
           <p className="leading-loose text-sumi">{poem.meaning}</p>
         </section>
 
-        <section className="my-8">
-          <h2 className="mb-4 font-sans text-xl font-bold text-sumi">クイズで覚える</h2>
-          <Quiz correct={poem} all={all} mode="lower-from-upper" />
-          <Quiz correct={poem} all={all} mode="upper-from-lower" />
-        </section>
+        <aside className="my-8 rounded-lg border border-koshoku/30 bg-washi p-4 text-center">
+          <p className="font-sans text-sm text-koshoku">
+            この句を含むクイズに挑戦しよう
+          </p>
+          <Link
+            href="/quiz/"
+            className="mt-2 inline-block rounded-full bg-shu px-6 py-2 font-sans text-sm text-washi transition hover:opacity-90"
+          >
+            クイズを始める →
+          </Link>
+        </aside>
+
+        <PoemNavigation prev={prevPoem} next={nextPoem} />
 
         <RelatedPoemsSection related={related} target={poem} />
       </article>

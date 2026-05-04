@@ -52,3 +52,6 @@ next-env.d.ts
 # local scratch
 /tmp-*
 /scratch-*
+
+# Claude Code local state
+.claude/

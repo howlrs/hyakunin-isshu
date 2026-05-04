@@ -38,8 +38,20 @@ export default function HomePage() {
           className="mb-6 h-auto w-full overflow-hidden rounded-lg"
           priority
         />
-        <h1 className="font-serif text-3xl font-bold text-sumi md:text-4xl">百人一首 100首</h1>
-        <p className="mt-2 font-sans text-koshoku">情景を味わいながら、100首を覚える</p>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h1 className="font-serif text-3xl font-bold text-sumi md:text-4xl">
+              百人一首 100首
+            </h1>
+            <p className="mt-2 font-sans text-koshoku">情景を味わいながら、100首を覚える</p>
+          </div>
+          <Link
+            href="/quiz/"
+            className="rounded-full bg-shu px-6 py-2 font-sans text-washi transition hover:opacity-90"
+          >
+            クイズに挑戦 →
+          </Link>
+        </div>
       </header>
       <TabFilter poems={poems} />
       <footer className="mt-12 border-t border-koshoku/30 pt-4 text-center font-sans text-sm text-koshoku">

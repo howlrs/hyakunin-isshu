@@ -1,7 +1,7 @@
-// 100首の情景画像を Gemini で生成するスクリプト
-// 使い方: node scripts/generate-poem-images.mjs [--from N] [--to M] [--type scene|og]
+// 100首の情景画像を Gemini で生成するスクリプト (並列対応)
+// 使い方: node scripts/generate-poem-images.mjs [--from N] [--to M] [--type scene|og] [--parallel K]
 
-import { execSync } from 'node:child_process';
+import { execSync, spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -18,6 +18,7 @@ const getArg = (name, def) => {
 const from = parseInt(getArg('from', '1'), 10);
 const to = parseInt(getArg('to', '100'), 10);
 const type = getArg('type', 'scene'); // scene | og
+const parallel = Math.max(1, parseInt(getArg('parallel', '1'), 10));
 
 const TYPE_CONFIG = {
   scene: {
@@ -59,41 +60,80 @@ while ((m = poemRegex.exec(poemsTs)) !== null) {
 console.log(`Parsed ${poems.length} poems`);
 
 const targets = poems.filter((p) => p.id >= from && p.id <= to);
-console.log(`Generating ${targets.length} images (id ${from}-${to}, type=${type})`);
+console.log(
+  `Generating ${targets.length} images (id ${from}-${to}, type=${type}, parallel=${parallel})`,
+);
 
 let success = 0;
 let skipped = 0;
 let failed = 0;
 
-for (const p of targets) {
+function generateOneAttempt(p) {
+  return new Promise((resolve) => {
+    const outPath = `${REPO}/${cfg.dir}/${p.slug}.png`;
+    const prompt = `百人一首 第${p.id}番『${p.kami} ${p.shimo}』(${p.author})。${p.scene} ${cfg.promptSuffix}`;
+    // spawn でAPIキー等の環境変数を子プロセスに渡す
+    const child = spawn(
+      '/home/o9oem/.claude/hooks/gemini-review.sh',
+      ['image', prompt, '--output', outPath],
+      { env: process.env, stdio: ['ignore', 'pipe', 'pipe'] },
+    );
+    let out = '';
+    let err = '';
+    const timer = setTimeout(() => {
+      child.kill('SIGKILL');
+    }, 180000);
+    child.stdout.on('data', (d) => (out += d.toString()));
+    child.stderr.on('data', (d) => (err += d.toString()));
+    child.on('close', (code) => {
+      clearTimeout(timer);
+      const ok =
+        existsSync(outPath) || out.includes('Image saved') || err.includes('Image saved');
+      const log = (out + '\n' + err).slice(-500);
+      resolve({ ok, log: `code=${code} ${log}` });
+    });
+    child.on('error', (e) => {
+      clearTimeout(timer);
+      resolve({ ok: false, log: `spawn-error: ${e.message}` });
+    });
+  });
+}
+
+async function generateOne(p) {
   const outPath = `${REPO}/${cfg.dir}/${p.slug}.png`;
   if (existsSync(outPath)) {
     console.log(`[skip] ${p.id} ${p.slug} (exists)`);
     skipped++;
-    continue;
+    return;
   }
-
-  const prompt = `百人一首 第${p.id}番『${p.kami} ${p.shimo}』(${p.author})。${p.scene} ${cfg.promptSuffix}`;
-
-  try {
-    // gemini-review.sh image を呼ぶ
-    const result = execSync(
-      `~/.claude/hooks/gemini-review.sh image ${JSON.stringify(prompt)} --output ${JSON.stringify(outPath)} 2>&1`,
-      { encoding: 'utf8', timeout: 120000, shell: '/bin/bash' },
-    );
-    const ok = result.includes('Image saved') || existsSync(outPath);
+  // 最大3回リトライ (リトライ間で5秒待機)
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const { ok, log } = await generateOneAttempt(p);
     if (ok) {
-      console.log(`[ok]   ${p.id} ${p.slug}`);
+      console.log(`[ok]   ${p.id} ${p.slug}${attempt > 1 ? ` (retry ${attempt - 1})` : ''}`);
       success++;
-    } else {
-      console.error(`[fail] ${p.id} ${p.slug}: ${result.slice(0, 200)}`);
-      failed++;
+      return;
     }
-  } catch (err) {
-    console.error(`[fail] ${p.id} ${p.slug}: ${String(err.message || err).slice(0, 200)}`);
-    failed++;
+    console.error(`[try${attempt}] ${p.id} ${p.slug}: ${log.replace(/\n/g, ' | ').slice(0, 400)}`);
+    if (attempt < 3) await new Promise((r) => setTimeout(r, 5000));
   }
+  console.error(`[FAIL] ${p.id} ${p.slug} (3 retries exhausted)`);
+  failed++;
 }
+
+// 並列実行 (chunked)
+async function processInParallel(tasks, concurrency) {
+  const queue = [...tasks];
+  const workers = Array.from({ length: concurrency }, async () => {
+    while (queue.length > 0) {
+      const task = queue.shift();
+      if (task) await generateOne(task);
+    }
+  });
+  await Promise.all(workers);
+}
+
+await processInParallel(targets, parallel);
 
 console.log(`\nDone: ${success} ok, ${skipped} skipped, ${failed} failed`);
 process.exit(failed > 0 ? 1 : 0);

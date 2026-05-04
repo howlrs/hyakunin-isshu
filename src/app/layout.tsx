@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Noto_Serif_JP, Noto_Sans_JP, Klee_One } from 'next/font/google';
+import { VoiceProvider } from '@/components/VoiceProvider';
 import './globals.css';
 
 const notoSerifJp = Noto_Serif_JP({
@@ -67,7 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main-content" className="skip-link">
           本文へスキップ
         </a>
-        {children}
+        <VoiceProvider>{children}</VoiceProvider>
       </body>
     </html>
   );
