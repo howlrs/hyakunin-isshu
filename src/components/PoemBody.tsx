@@ -3,7 +3,7 @@ import type { Poem } from '@/data/types';
 export function PoemBody({ poem }: { poem: Poem }) {
   return (
     <section
-      className="poem-vertical mx-auto my-8 flex max-h-[60vh] flex-row-reverse gap-8 overflow-x-auto px-4 py-6 font-klee text-2xl leading-loose md:text-3xl"
+      className="poem-vertical mx-auto my-8 flex h-72 flex-row-reverse gap-8 overflow-x-auto overflow-y-hidden px-4 py-6 font-klee text-2xl leading-loose md:h-96 md:text-3xl"
       aria-label={`${poem.kamiNoKu} ${poem.shimoNoKu}`}
     >
       <p className="whitespace-nowrap" aria-hidden="true">

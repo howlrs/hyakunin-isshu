@@ -99,7 +99,7 @@ export function TabFilter({ poems }: { poems: Poem[] }) {
   return (
     <>
       <nav
-        className="mb-6 flex flex-wrap gap-2 border-b border-koshoku/30 pb-4"
+        className="mb-6 -mx-4 flex gap-2 overflow-x-auto border-b border-koshoku/30 px-4 pb-4 sm:mx-0 sm:flex-wrap sm:px-0"
         aria-label="一覧の表示切替"
       >
         {TABS.map((t) => (
@@ -107,7 +107,7 @@ export function TabFilter({ poems }: { poems: Poem[] }) {
             key={t.key}
             type="button"
             onClick={() => setTab(t.key)}
-            className={`rounded-full px-4 py-1 font-sans text-sm transition ${
+            className={`shrink-0 rounded-full px-4 py-1.5 font-sans text-sm transition ${
               tab === t.key
                 ? 'bg-shu text-washi'
                 : 'border border-koshoku/40 text-sumi hover:border-shu hover:text-shu'
