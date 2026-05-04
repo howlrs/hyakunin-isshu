@@ -24,7 +24,7 @@ const kleeOne = Klee_One({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://hyakunin-isshu.pages.dev'),
+  metadataBase: new URL('https://hyakunin-isshu-8r7.pages.dev'),
   title: {
     default: '百人一首暗記',
     template: '%s | 百人一首暗記',
