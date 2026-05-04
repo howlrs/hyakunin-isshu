@@ -1,8 +1,9 @@
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import type { Metadata } from 'next';
 import { getAllPoems, getPoemBySlug } from '@/lib/poems';
 import { getRelatedPoems } from '@/lib/relations';
-import { KIMARI_LABELS, ERA_LABELS, THEME_LABELS } from '@/data/types';
+import { ERA_LABELS, THEME_LABELS } from '@/data/types';
 import { PoemBody } from '@/components/PoemBody';
 import { KimariBadge } from '@/components/KimariBadge';
 import { Quiz } from '@/components/Quiz';
@@ -64,9 +65,9 @@ export default async function PoemPage({
       <JsonLd data={articleLd} />
 
       <nav className="mb-6 font-sans text-sm">
-        <a href="/" className="text-koshoku hover:text-shu hover:underline">
+        <Link href="/" className="text-koshoku hover:text-shu hover:underline">
           ← 一覧へ戻る
-        </a>
+        </Link>
       </nav>
 
       <article>

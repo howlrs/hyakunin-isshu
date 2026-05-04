@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import type { Poem } from '@/data/types';
 import { pickDistractors } from '@/lib/quiz';
 
@@ -12,13 +12,14 @@ interface Props {
   mode: QuizMode;
 }
 
-export function Quiz({ correct, all, mode }: Props) {
-  const distractors = useMemo(() => pickDistractors(correct, all, 3), [correct, all]);
-  const choices = useMemo(() => {
-    const arr = [correct, ...distractors];
-    return arr.sort(() => Math.random() - 0.5);
-  }, [correct, distractors]);
+function shuffleChoices(correct: Poem, all: Poem[]): Poem[] {
+  const distractors = pickDistractors(correct, all, 3);
+  const arr = [correct, ...distractors];
+  return arr.sort(() => Math.random() - 0.5);
+}
 
+export function Quiz({ correct, all, mode }: Props) {
+  const [choices, setChoices] = useState<Poem[]>(() => shuffleChoices(correct, all));
   const [pickedId, setPickedId] = useState<number | null>(null);
 
   const isAnswered = pickedId !== null;
@@ -65,7 +66,10 @@ export function Quiz({ correct, all, mode }: Props) {
       {isAnswered && (
         <button
           type="button"
-          onClick={() => setPickedId(null)}
+          onClick={() => {
+            setChoices(shuffleChoices(correct, all));
+            setPickedId(null);
+          }}
           className="font-sans text-sm text-shu underline"
         >
           もう一度

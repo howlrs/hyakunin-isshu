@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { getAllPoems } from '@/lib/poems';
 import { TabFilter } from '@/components/TabFilter';
 import { JsonLd } from '@/components/JsonLd';
@@ -33,9 +34,9 @@ export default function HomePage() {
       </header>
       <TabFilter poems={poems} />
       <footer className="mt-12 border-t border-koshoku/30 pt-4 text-center font-sans text-sm text-koshoku">
-        <a href="/about/" className="hover:text-shu hover:underline">
+        <Link href="/about/" className="hover:text-shu hover:underline">
           このサイトについて
-        </a>
+        </Link>
       </footer>
     </main>
   );

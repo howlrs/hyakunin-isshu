@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { JsonLd } from '@/components/JsonLd';
 
 export const metadata = {
@@ -46,9 +47,9 @@ export default function AboutPage() {
       </section>
 
       <nav className="my-8">
-        <a href="/" className="font-sans text-shu hover:underline">
+        <Link href="/" className="font-sans text-shu hover:underline">
           ← 一覧へ戻る
-        </a>
+        </Link>
       </nav>
     </main>
   );
