@@ -54,11 +54,6 @@ export default function HomePage() {
         </div>
       </header>
       <TabFilter poems={poems} />
-      <footer className="mt-12 border-t border-koshoku/30 pt-4 text-center font-sans text-sm text-koshoku">
-        <Link href="/about/" className="hover:text-shu hover:underline">
-          このサイトについて
-        </Link>
-      </footer>
     </main>
   );
 }

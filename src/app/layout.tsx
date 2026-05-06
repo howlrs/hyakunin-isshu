@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Noto_Serif_JP, Noto_Sans_JP, Klee_One } from 'next/font/google';
 import { VoiceProvider } from '@/components/VoiceProvider';
+import { SiteFooter } from '@/components/SiteFooter';
 import './globals.css';
 
 const notoSerifJp = Noto_Serif_JP({
@@ -69,6 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           本文へスキップ
         </a>
         <VoiceProvider>{children}</VoiceProvider>
+        <SiteFooter />
       </body>
     </html>
   );
