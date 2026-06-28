@@ -62,14 +62,28 @@ export default function HomePage() {
             <li key={poem.id}>
               <Link
                 href={`/poems/${poem.slug}/`}
-                className="block rounded border border-koshoku/30 bg-washi px-3 py-3 transition hover:border-shu focus-visible:border-shu"
+                className="group block overflow-hidden rounded border border-koshoku/30 bg-washi transition hover:border-shu hover:shadow-md focus-visible:border-shu"
               >
-                <div className="mb-2 flex items-center justify-between gap-2">
-                  <span className="font-sans text-xs text-koshoku">第{poem.id}番</span>
-                  <KimariBadge group={poem.kimariGroup} kimariJi={poem.kimariJi} />
+                <div className="relative aspect-[16/9] bg-washi">
+                  <Image
+                    src={`/images/poems/thumbs/${poem.slug}.webp`}
+                    alt=""
+                    fill
+                    sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw"
+                    className="object-cover transition group-hover:scale-105"
+                    loading="lazy"
+                  />
                 </div>
-                <p className="font-klee text-base leading-relaxed text-sumi">{poem.kamiNoKu}</p>
-                <p className="mt-1 font-sans text-xs text-koshoku">{poem.author}</p>
+                <div className="px-3 py-3">
+                  <div className="mb-2 flex items-center justify-between gap-2">
+                    <span className="font-sans text-xs text-koshoku">第{poem.id}番</span>
+                    <KimariBadge group={poem.kimariGroup} kimariJi={poem.kimariJi} />
+                  </div>
+                  <p className="font-klee text-base leading-relaxed text-sumi group-hover:text-shu">
+                    {poem.kamiNoKu}
+                  </p>
+                  <p className="mt-1 font-sans text-xs text-koshoku">{poem.author}</p>
+                </div>
               </Link>
             </li>
           ))}
