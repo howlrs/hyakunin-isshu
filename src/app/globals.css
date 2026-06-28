@@ -48,6 +48,11 @@ body {
 }
 
 .poem-vertical {
+  min-height: 32rem;
   writing-mode: vertical-rl;
   text-orientation: upright;
+}
+
+.poem-vertical p {
+  white-space: nowrap;
 }
