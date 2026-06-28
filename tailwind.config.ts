@@ -11,9 +11,15 @@ const config: Config = {
         koshoku: '#8C6E3F',
       },
       fontFamily: {
-        serif: ['var(--font-noto-serif-jp)', 'serif'],
-        sans: ['var(--font-noto-sans-jp)', 'sans-serif'],
-        klee: ['var(--font-klee-one)', 'cursive'],
+        serif: ['"Yu Mincho"', '"Hiragino Mincho ProN"', '"Hiragino Mincho Pro"', 'serif'],
+        sans: [
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'sans-serif',
+        ],
+        klee: ['"Yu Mincho"', '"Hiragino Mincho ProN"', '"Hiragino Mincho Pro"', 'serif'],
       },
     },
   },
