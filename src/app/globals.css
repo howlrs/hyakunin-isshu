@@ -12,7 +12,7 @@ html {
 
 body {
   color: #1F1B16;
-  font-family: var(--font-noto-serif-jp), serif;
+  font-family: "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", serif;
   -webkit-font-smoothing: antialiased;
 }
 

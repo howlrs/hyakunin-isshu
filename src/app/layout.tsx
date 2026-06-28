@@ -1,29 +1,7 @@
 import type { Metadata } from 'next';
-import { Noto_Serif_JP, Noto_Sans_JP, Klee_One } from 'next/font/google';
 import { VoiceProvider } from '@/components/VoiceProvider';
 import { SiteFooter } from '@/components/SiteFooter';
 import './globals.css';
-
-const notoSerifJp = Noto_Serif_JP({
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  display: 'swap',
-  variable: '--font-noto-serif-jp',
-});
-
-const notoSansJp = Noto_Sans_JP({
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  display: 'swap',
-  variable: '--font-noto-sans-jp',
-});
-
-const kleeOne = Klee_One({
-  subsets: ['latin'],
-  weight: ['400', '600'],
-  display: 'swap',
-  variable: '--font-klee-one',
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://hyakunin.howlrs.net'),
@@ -61,10 +39,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="ja"
-      className={`${notoSerifJp.variable} ${notoSansJp.variable} ${kleeOne.variable}`}
-    >
+    <html lang="ja">
       <body>
         <a href="#main-content" className="skip-link">
           本文へスキップ

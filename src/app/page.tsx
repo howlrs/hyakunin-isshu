@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { getAllPoems } from '@/lib/poems';
-import { TabFilter } from '@/components/TabFilter';
 import { JsonLd } from '@/components/JsonLd';
+import { KimariBadge } from '@/components/KimariBadge';
 
 export const metadata = {
   title: '百人一首 100首 一覧',
@@ -53,7 +53,28 @@ export default function HomePage() {
           </Link>
         </div>
       </header>
-      <TabFilter poems={poems} />
+      <section aria-labelledby="poem-list-title">
+        <h2 id="poem-list-title" className="sr-only">
+          百人一首 一覧
+        </h2>
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {poems.map((poem) => (
+            <li key={poem.id}>
+              <Link
+                href={`/poems/${poem.slug}/`}
+                className="block rounded border border-koshoku/30 bg-washi px-3 py-3 transition hover:border-shu focus-visible:border-shu"
+              >
+                <div className="mb-2 flex items-center justify-between gap-2">
+                  <span className="font-sans text-xs text-koshoku">第{poem.id}番</span>
+                  <KimariBadge group={poem.kimariGroup} kimariJi={poem.kimariJi} />
+                </div>
+                <p className="font-klee text-base leading-relaxed text-sumi">{poem.kamiNoKu}</p>
+                <p className="mt-1 font-sans text-xs text-koshoku">{poem.author}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
     </main>
   );
 }
