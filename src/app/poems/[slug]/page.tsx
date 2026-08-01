@@ -11,6 +11,7 @@ import { PoemReading } from '@/components/PoemReading';
 import { KimariBadge } from '@/components/KimariBadge';
 import { RelatedPoemsSection } from '@/components/RelatedPoemsSection';
 import { JsonLd } from '@/components/JsonLd';
+import { WeakPoemToggle } from '@/components/WeakPoemToggle';
 
 export async function generateStaticParams() {
   return getAllPoems().map((p) => ({ slug: p.slug }));
@@ -51,11 +52,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function PoemPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function PoemPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const poem = getPoemBySlug(slug);
   if (!poem) notFound();
@@ -92,7 +89,10 @@ export default async function PoemPage({
         <header className="mb-6 space-y-3">
           <h1 className="font-klee text-2xl text-sumi md:text-3xl">
             {poem.kamiNoKu}
-            <small className="mt-1 block font-sans text-sm font-normal text-koshoku" aria-hidden="true">
+            <small
+              className="mt-1 block font-sans text-sm font-normal text-koshoku"
+              aria-hidden="true"
+            >
               {poem.kamiKana}
             </small>
           </h1>
@@ -138,15 +138,14 @@ export default async function PoemPage({
         </section>
 
         <aside className="my-8 rounded-lg border border-koshoku/30 bg-washi p-4 text-center">
-          <p className="font-sans text-sm text-koshoku">
-            この句を含むクイズに挑戦しよう
-          </p>
+          <p className="font-sans text-sm text-koshoku">この句を含むクイズに挑戦しよう</p>
           <Link
-            href="/quiz/"
+            href={`/quiz/?poem=${poem.id}`}
             className="mt-2 inline-block rounded-full bg-shu px-6 py-2 font-sans text-sm text-washi transition hover:opacity-90"
           >
-            クイズを始める →
+            この一首を稽古する →
           </Link>
+          <WeakPoemToggle poemId={poem.id} />
         </aside>
 
         <PoemNavigation prev={prevPoem} next={nextPoem} />
