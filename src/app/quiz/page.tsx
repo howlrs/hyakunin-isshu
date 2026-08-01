@@ -4,7 +4,7 @@ import { QuizSession } from '@/components/QuizSession';
 import { JsonLd } from '@/components/JsonLd';
 
 export const metadata = {
-  title: 'クイズ — ランダム10問チャレンジ',
+  title: 'クイズ — 一首稽古・苦手札・ランダム10問',
   description:
     '百人一首100首からランダムに10問。上の句から下の句、下の句から上の句を当てる4択クイズ。',
   alternates: { canonical: '/quiz/' },
@@ -31,7 +31,7 @@ export default function QuizPage() {
       <header className="mb-6">
         <h1 className="font-serif text-3xl font-bold text-sumi md:text-4xl">クイズ</h1>
         <p className="mt-2 font-sans text-koshoku">
-          ランダム10問。上の句から下の句、または下の句から上の句を選んでください。
+          一首稽古、苦手札の復習、ランダム10問に挑戦できます。正しい句を4択から選んでください。
         </p>
       </header>
       <QuizSession allPoems={poems} />
