@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { getAllPoems } from '@/lib/poems';
 import { JsonLd } from '@/components/JsonLd';
 import { KimariBadge } from '@/components/KimariBadge';
+import { PoemSearch } from '@/components/PoemSearch';
+import { createSearchEntry } from '@/lib/search';
 
 export const metadata = {
   title: '百人一首 100首 一覧',
@@ -57,9 +59,10 @@ export default function HomePage() {
         <h2 id="poem-list-title" className="sr-only">
           百人一首 一覧
         </h2>
-        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <PoemSearch entries={poems.map(createSearchEntry)} listId="poem-list" />
+        <ul id="poem-list" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {poems.map((poem) => (
-            <li key={poem.id}>
+            <li key={poem.id} data-poem-id={poem.id}>
               <Link
                 href={`/poems/${poem.slug}/`}
                 className="group block overflow-hidden rounded border border-koshoku/30 bg-washi transition hover:border-shu hover:shadow-md focus-visible:border-shu"
